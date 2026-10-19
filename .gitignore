@@ -37,6 +37,7 @@
 SCPH*.BIN
 
 # Local path/config stubs
+game.toml.bak
 bios.cfg
 disc.cfg
 rom.cfg

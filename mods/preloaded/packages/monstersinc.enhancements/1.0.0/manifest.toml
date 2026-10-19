@@ -1,0 +1,62 @@
+format_version = 6
+id = "monstersinc.enhancements"
+version = "1.0.0"
+name = "Monsters, Inc. Enhancements"
+author = "Monsters, Inc. Recompiled contributors"
+description = "Title-owned presentation enhancements for Monsters, Inc. Scare Island / Scream Team. Everything here is off by default; turn features on from the launcher Mods page or mods/state.toml."
+resolver = "declarative"
+save_compatibility = "shared"
+
+# US (Scream Team) and every PAL language release of Scare Island run the same
+# engine, so the package targets all of them.
+[[target]]
+game_id = "SCUS-94635"
+[[target]]
+game_id = "SCES-03759"
+[[target]]
+game_id = "SCES-03760"
+[[target]]
+game_id = "SCES-03761"
+[[target]]
+game_id = "SCES-03762"
+[[target]]
+game_id = "SCES-03763"
+[[target]]
+game_id = "SCES-03764"
+[[target]]
+game_id = "SCES-03765"
+[[target]]
+game_id = "SCES-03766"
+[[target]]
+game_id = "SCES-03767"
+[[target]]
+game_id = "SCES-03768"
+[[target]]
+game_id = "SCES-03769"
+
+[[feature]]
+id = "widescreen"
+name = "Widescreen"
+description = "Widens the 3D field of view to fill a 16:9 or 21:9 window (the GTE projection is squashed, then presented wide). FMVs stay 4:3 pillarboxed. Experimental: some 2D HUD/menu elements are centre-squashed rather than edge-anchored, and objects the game culls at the original 4:3 edge can pop in at the far sides."
+group = "Visual"
+channel = "experimental"
+default_enabled = false
+
+[[option]]
+feature = "widescreen"
+id = "aspect"
+label = "Aspect ratio"
+type = "choice"
+default = "16:9"
+
+[[option.choice]]
+value = "16:9"
+label = "16:9 (Widescreen)"
+
+[[option.choice]]
+value = "21:9"
+label = "21:9 (Ultrawide)"
+
+[[plugin]]
+feature = "widescreen"
+id = "monstersinc.widescreen"

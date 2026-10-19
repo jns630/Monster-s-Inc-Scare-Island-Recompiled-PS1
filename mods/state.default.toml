@@ -1,0 +1,30 @@
+# Default mod selection. scripts/build_from_disc.sh copies this to
+# build-release/mods/state.toml the first time it builds; after that the file
+# is yours (no build overwrites it). Flip `enabled` to turn a feature on/off.
+format_version = 2
+
+# PGXP precision: stops 3D polygons wobbling/jittering between whole pixels
+# and corrects warped floor/wall textures. Visual-only. Needs supersampling >= 2.
+[[feature]]
+package_id = "psx.enhancement.pgxp"
+id = "pgxp"
+enabled = true
+
+# Fast Loading: runs disc loads faster than real time without changing
+# anything the game can observe. Set enabled = false for authentic load times.
+[[feature]]
+package_id = "psx.enhancement.fast-loading"
+id = "fast-loading"
+enabled = true
+[feature.values]
+multiplier = "4"
+
+# Widescreen (experimental): wider 3D field of view in levels; menus, loading
+# cards and FMVs stay 4:3. Objects the game culls at the old 4:3 edge can
+# leave dark gaps at the far sides. aspect = "16:9" or "21:9".
+[[feature]]
+package_id = "monstersinc.enhancements"
+id = "widescreen"
+enabled = false
+[feature.values]
+aspect = "16:9"

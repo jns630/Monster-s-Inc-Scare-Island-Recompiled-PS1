@@ -1,0 +1,23 @@
+diff --git a/runtime/src/main.cpp b/runtime/src/main.cpp
+index 5ab2d000..55fb7093 100644
+--- a/runtime/src/main.cpp
++++ b/runtime/src/main.cpp
+@@ -14500,9 +14500,15 @@ session_reboot:
+         g_video_perspective_texturing = (*e && *e != '0') ? 1 : 0;
+     if (const char* e = std::getenv("PSX_PGXP_CPU_MODE"))
+         g_video_pgxp_cpu_mode = (*e && *e != '0') ? 1 : 0;
+-    gte_geometry_correction_set(g_video_geometry_correction);
+-    gpu_texture_correction_set(g_video_perspective_texturing);
+-    pgxp_set_cpu_mode(g_video_pgxp_cpu_mode);
++    /* mod_runtime_activate_plugins() ran earlier and may already have armed
++     * these (psx.enhancement.pgxp). Config/env can only turn a correction ON
++     * here; resetting from the default-off config silently undid an enabled
++     * PGXP mod. */
++    gte_geometry_correction_set(g_video_geometry_correction ||
++                                gte_geometry_correction_enabled());
++    gpu_texture_correction_set(g_video_perspective_texturing ||
++                               gpu_texture_correction_enabled());
++    pgxp_set_cpu_mode(g_video_pgxp_cpu_mode || pgxp_cpu_mode());
+     pgxp_set_tolerance(g_video_pgxp_tolerance);
+     /* Scanlines: env override wins over config, same as the corrections above,
+      * so a headless/free-run boot can be captured with the effect armed from the

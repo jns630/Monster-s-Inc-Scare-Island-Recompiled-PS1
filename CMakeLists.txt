@@ -15,13 +15,13 @@ project(ScareislandRecomp LANGUAGES C CXX)
 # Scaffold prompts / flags fill these. Without recomp-ui, PSX_RECOMP_UI is OFF.
 # Setup-host CI requires WIZARD_CMAKE_BLOCK / ENABLE_SETUP_WIZARD (FORCE_SETUP_HOST
 # alone does not open first-run / Generate & rebuild).
-﻿set(PSX_RECOMP_UI OFF CACHE BOOL
+set(PSX_RECOMP_UI OFF CACHE BOOL
     "No recomp-ui submodule in this scaffold" FORCE)
-﻿# Full netplay UI -- enable after adding recomp-ui + testing:
+# Full netplay UI -- enable after adding recomp-ui + testing:
 # if(EXISTS "${PSXRECOMP_ROOT}/lib/recomp-net/CMakeLists.txt")
 #     set(PSX_NETPLAY ON CACHE BOOL "..." FORCE)
 # endif()
-﻿# First-run setup wizard -- enable after testing:
+# First-run setup wizard -- enable after testing:
 # set(PSX_SETUP_WIZARD ON CACHE BOOL "..." FORCE)
 include("${PSXRECOMP_ROOT}/runtime/runtime.cmake")
 
@@ -40,15 +40,31 @@ psxrecomp_add_game_runtime(psx-runtime
     # ENABLE_NETPLAY_IF_PRESENT
     # NETPLAY_LOBBY_URL ws://netplay.retcomm.net:8765
     # ENABLE_SETUP_WIZARD
-    WINDOW_TITLE "Scareisland Recompiled"
+    WINDOW_TITLE "Monsters, Inc. Scare Island Recompiled"
+    # Pinned so it always matches codegen_setup.c .exe_basename, whatever the
+    # window title says.
+    EXE_NAME "Scareisland_Recompiled"
     DEFAULT_GAME_CONFIG_PATH "game.toml"
     MAX_PLAYERS 1
-﻿    # LAUNCHER_BOXART "${CMAKE_CURRENT_SOURCE_DIR}/launcher_assets/img/boxart.tga"
-﻿    APP_ICON "${CMAKE_CURRENT_SOURCE_DIR}/assets/psxrecomp.ico"
-    GEN_MARKER "generated/SLUS_01234_dispatch.c"
-    GEN_FULL_GLOB "generated/SLUS_01234_full_*.c"
-﻿    # CODEGEN_SETUP_SOURCES -- add with recomp-ui / wizard later
+    # LAUNCHER_BOXART "${CMAKE_CURRENT_SOURCE_DIR}/launcher_assets/img/boxart.tga"
+    APP_ICON "${CMAKE_CURRENT_SOURCE_DIR}/assets/psxrecomp.ico"
+    # Boot EXE of the PAL English disc (SCES-03759, SYSTEM.CNF BOOT=SCES_037.59).
+    # Must agree with game.toml [prepare_disc].boot_exe and codegen_setup.c.
+    # scripts/build_from_disc.sh rewrites all three if your disc differs.
+    GEN_MARKER "generated/SCES_037.59_dispatch.c"
+    GEN_FULL_GLOB "generated/SCES_037.59_full_*.c"
+    # CODEGEN_SETUP_SOURCES -- add with recomp-ui / wizard later
 )
+
+# Game-owned trusted mod plugins (selected by mods/preloaded/packages/
+# monstersinc.enhancements). Linked into every runtime variant the framework
+# made, so the package resolves whichever exe the player launches.
+foreach(_mi_t psx-runtime psx-runtime-pgxp)
+    if(TARGET ${_mi_t})
+        target_sources(${_mi_t} PRIVATE
+            "${CMAKE_CURRENT_SOURCE_DIR}/src/monstersinc_mods.c")
+    endif()
+endforeach()
 
 # Stage runtime configs next to the exe for direct build/ launches. Only copy
 # files that exist — never fail POST_BUILD when game_options.toml is absent.

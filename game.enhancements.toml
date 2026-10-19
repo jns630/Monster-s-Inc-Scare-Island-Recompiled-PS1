@@ -1,0 +1,25 @@
+# Title presentation defaults. scripts/build_from_disc.sh merges these
+# sections into game.toml AFTER the disc probe rewrites it, so they survive a
+# re-probe. Edit here, not in game.toml. Per-player overrides go in
+# build-release/settings.toml; mod toggles in build-release/mods/state.toml.
+
+[video]
+renderer = "opengl"
+# Internal resolution multiplier (1..4). 4 = 1280x960 for a 320x240 game.
+# Tested clean on SCUS-94635. Drop to 2 on a very weak GPU.
+supersampling = 4
+# "nearest" keeps the original crisp texels; "bilinear" smooths them.
+texture_filtering = "nearest"
+aspect_ratio = "4:3"   # widescreen is the mod "Widescreen" (mods/state.toml)
+
+[controller]
+# Player 1 uses the first connected gamepad (Xbox/PlayStation/etc.). The keyboard
+# keeps working too. Release builds otherwise default player 1 to keyboard-only.
+p1_device = "auto"
+default_mode = "digital"
+
+[widescreen]
+# 3D game: classify gameplay frames by GTE projection volume so the native-wide
+# renderer engages in levels and keeps menus / loading cards / FMV at 4:3.
+# Inert unless the Widescreen mod is enabled.
+gte_game_mode = true

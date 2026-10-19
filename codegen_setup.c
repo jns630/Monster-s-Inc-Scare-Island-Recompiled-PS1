@@ -6,14 +6,14 @@
 #include "psxrecomp_codegen_host.h"
 
 static const PsxrecompCodegenHostConfig kCodegenConfig = {
-    .display_name = "Scareisland",
+    .display_name = "Monsters, Inc. Scare Island",
     .project_root_env = "SCAREISLANDRECOMP_PROJECT_ROOT",
     .build_dir_env = "SCAREISLANDRECOMP_BUILD_DIR",
     .force_setup_env = "SCAREISLANDRECOMP_FORCE_SETUP",
     .psxrecomp_cli_relpath = "psxrecomp/psxrecomp_cli.py",
     .seed_cfg_relpath = "game.toml",
     .game_toml_relpath = "game.toml",
-    .gen_marker_relpath = "generated/SLUS_01234_dispatch.c",
+    .gen_marker_relpath = "generated/SCES_037.59_dispatch.c",
     .build_dir_name = "build-release",
     .cmake_target = "psx-runtime",
     .exe_basename = "Scareisland_Recompiled",

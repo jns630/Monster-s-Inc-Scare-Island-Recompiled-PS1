@@ -1,35 +1,48 @@
-# Minimal game.toml stub for the New Project Layout.
-# With setup_project --disc <cue>, probe_disc.py overwrites this with
-# serial / EXE header / Track 01 digests / TOC fp / [netplay] gates, and writes
-# seeds/ghidra_funcs.txt (boot-EXE JAL scan).
-# Without --disc, fill by hand (or re-run probe_disc.py later).
-# See psxrecomp/docs/GAME_PROJECT_SETUP.md and docs/config_schema.md.
+# Monsters, Inc. Scare Island (PAL / English) — SCES-03759.
+#
+# This is a pre-filled baseline. Running scripts/build_from_disc.sh (or
+# psxrecomp/tools/new_project_layout/probe_disc.py --write-game-toml) against
+# your own legal dump overwrites it with the exact EXE header, Track 01
+# digests and TOC fingerprint read from the disc.
+#
+# Header fields (load_address / entry_pc / text_size / stack_base) are left
+# out on purpose: psxrecomp-game reads them from the PS-X EXE header itself.
+# See psxrecomp/docs/GAME_PROJECT_SETUP.md and psxrecomp/docs/config_schema.md.
 
 [game]
-name = "Scareisland"
-# id = "SLUS-XXXXX"
+name = "Monsters, Inc. Scare Island"
+id = "SCES-03759"
 players = 1
-# exe = "disc/SLUS_01234"
-# disc = "disc/game.cue"
-# load_address = "0x80010000"
-# entry_pc = "0x800XXXXX"
-# text_size = "0x00000000"
-# stack_base = "0x801FFFF0"
+exe = "disc/SCES_037.59"
+disc = "disc/Monsters, Inc. - Scare Island (Europe).cue"
+
+[prepare_disc]
+out_dir = "disc"
+boot_exe = "SCES_037.59"
 
 [recompiler]
 seeds = "seeds/ghidra_funcs.txt"
 out_dir = "generated"
 strict = true
 
-# Optional identity hashes for Generate / netplay dump checks:
-# [prepare_disc]
-# out_dir = "disc"
-# boot_exe = "SLUS_01234"
-# known_sizes = [...]
-# known_md5 = [...]
-# known_sha1 = [...]
+[runtime]
+window_title = "Monsters, Inc. Scare Island Recompiled"
+memcard_dir = "saves"
 
-# [netplay]
-# require_cue = true
-# required_tracks = 0
-# required_disc_fp = "…"
+[video]
+renderer = "opengl"
+# Internal resolution multiplier (1..4). 4 = 1280x960 for a 320x240 game.
+# Tested clean on SCUS-94635. Drop to 2 on a very weak GPU.
+supersampling = 4
+# "nearest" keeps the original crisp texels; "bilinear" smooths them.
+texture_filtering = "nearest"
+aspect_ratio = "4:3"   # widescreen is the mod "Widescreen" (mods/state.toml)
+
+[controller]
+default_mode = "digital"
+
+[widescreen]
+# 3D game: classify gameplay frames by GTE projection volume so the native-wide
+# renderer engages in levels and keeps menus / loading cards / FMV at 4:3.
+# Inert unless the Widescreen mod is enabled.
+gte_game_mode = true
